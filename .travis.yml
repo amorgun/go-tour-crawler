@@ -1,0 +1,6 @@
+language: go
+
+go:
+  - tip
+
+gobuild_args: github.com\amorgun\go-tour-crawler\crawler_test

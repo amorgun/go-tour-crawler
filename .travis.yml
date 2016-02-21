@@ -3,4 +3,4 @@ language: go
 go:
   - tip
 
-script: go test github.com/amorgun/go-tour-crawler/crawler_test
+script: go test github.com/amorgun/go-tour-crawler/crawler_tests

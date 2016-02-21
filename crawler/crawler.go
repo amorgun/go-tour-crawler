@@ -10,11 +10,13 @@ type Memo struct {
 	lock    sync.Mutex
 }
 
+type CrawlFunc func (string, int, Fetcher, func(string, string))
+
 // Crawl uses fetcher to recursively crawl
 // pages starting with url, to a maximum of depth.
-func Crawl(url string, depth int, fetcher Fetcher,visit_url func(string, string)) {
+func Crawl(url string, depth int, fetcher Fetcher,visitUrl func(string, string)) {
 	var wg sync.WaitGroup
-	memo := &Memo{make(map[string]bool), sync.Mutex{}}
+	memo := Memo{make(map[string]bool), sync.Mutex{}}
 
 	var recirsiveCrawl func (string, int)
 	recirsiveCrawl = func (url string, depth int) {
@@ -22,13 +24,14 @@ func Crawl(url string, depth int, fetcher Fetcher,visit_url func(string, string)
 		if depth == 0 {
 			return
 		}
-		need_continue := func() bool {
+		needContinue := func() bool {
 			memo.lock.Lock()
 			defer memo.lock.Unlock()
-			already_visited := memo.visited[url]
-			return !already_visited
+			alreadyVisited := memo.visited[url]
+			memo.visited[url] = true
+			return !alreadyVisited
 		}()
-		if !need_continue {
+		if !needContinue {
 			return
 		}
 		body, urls, err := fetcher.Fetch(url)
@@ -36,7 +39,7 @@ func Crawl(url string, depth int, fetcher Fetcher,visit_url func(string, string)
 			fmt.Println(err)
 			return
 		}
-		visit_url(url, body)
+		visitUrl(url, body)
 		for _, u := range urls {
 			wg.Add(1)
 			go recirsiveCrawl(u, depth-1)
@@ -47,9 +50,4 @@ func Crawl(url string, depth int, fetcher Fetcher,visit_url func(string, string)
 	wg.Add(1)
 	go recirsiveCrawl(url, depth)
 	wg.Wait()
-}
-
-
-func main() {
-
 }

@@ -3,6 +3,7 @@ package crawler
 import (
 	"fmt"
 	"testing"
+	"sync"
 )
 
 func TestSimple(t *testing.T) {
@@ -44,28 +45,37 @@ func TestSimple(t *testing.T) {
 	for url, result := range fetcher {
 		expected_visited[url] = result.body
 	}
-	actual_visited := make(map[string]string)
+	actual_seen_body := make(map[string]string)
+	actual_visit_count := make(map[string]int)
+	lock := sync.Mutex{}
 
 	visit := func (url string, body string) {
 		fmt.Printf("found: %s %q\n", url, body)
-		actual_visited[url] = body
+		lock.Lock()
+		defer lock.Unlock()
+		actual_seen_body[url] = body
+		actual_visit_count[url]++
 	}
 
 	Crawl(start_url, max_depth, fetcher, visit)
+
 	for expected_url, expected_body := range expected_visited {
-		actual_body, visited := actual_visited[expected_url]
+		actual_body, visited := actual_seen_body[expected_url]
 		if !visited {
-			t.Errorf("Url %q in not visited", expected_url)
+			t.Errorf("Url %q has not been visited", expected_url)
 		}
 		if actual_body != expected_body {
-			t.Errorf("Find wrong body for url %q\nExpected: %q\nGot:%q",
+			t.Errorf("Found wrong body for url %q\nExpected: %q\nGot:%q",
 			 expected_url, expected_body, actual_body)
 		}
 	}
-	for visited_url := range actual_visited {
-		_, is_expected := expected_visited[visited_url]
+	for url := range actual_seen_body {
+		_, is_expected := expected_visited[url]
 		if !is_expected {
-			t.Errorf("Visited unexpected url %q", visited_url)
+			t.Errorf("Visited unexpected url %s", url)
+		}
+		if actual_visit_count[url] > 1 {
+			t.Errorf("Url %s has been visited multiple times", url)
 		}
 	}
 }

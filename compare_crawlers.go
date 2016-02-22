@@ -23,6 +23,7 @@ func main() {
 			} else {
 				fmt.Printf("%v: OK\n", crawlerName)
 			}
+			fmt.Println()
 		}
 		tests.RunAllTests(crawlerFunc, checkError)
 	}

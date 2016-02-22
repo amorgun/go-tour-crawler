@@ -3,4 +3,5 @@ language: go
 go:
   - tip
 
+install: true
 script: go test github.com/amorgun/go-tour-crawler/crawler_test

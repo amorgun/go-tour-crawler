@@ -19,7 +19,7 @@ func main() {
 	for crawlerName, crawlerFunc := range crawlers {
 		checkError := func (errorMessage string, ok bool) {
 			if !ok {
-				fmt.Printf("%v: FAILED\nReason: %v\n", crawlerName, errorMessage)
+				fmt.Printf("%v: FAILED\n\tReason: %v\n", crawlerName, errorMessage)
 			} else {
 				fmt.Printf("%v: OK\n", crawlerName)
 			}

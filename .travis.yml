@@ -4,4 +4,6 @@ go:
   - tip
 
 install: true
-script: go test github.com/amorgun/go-tour-crawler/crawler_test
+script:
+  - go test github.com/amorgun/go-tour-crawler/tests
+  - go run compare_crawlers.go

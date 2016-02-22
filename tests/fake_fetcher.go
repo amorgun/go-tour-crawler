@@ -1,4 +1,4 @@
-package crawler_tests
+package tests
 
 import (
 	"fmt"
@@ -33,7 +33,7 @@ func (f warningFetcher) Fetch(url string) (string, []string, error) {
 	f.lock.Lock()
 	defer f.lock.Unlock()
 	if f.alreadyFetched[url] {
-		fmt.Printf("WARNING: Url %s has been fetched multiple times", url)
+		fmt.Printf("WARNING: Url %s has been fetched multiple times\n", url)
 	}
 	f.alreadyFetched[url] = true
 	return f.fetcher.Fetch(url)

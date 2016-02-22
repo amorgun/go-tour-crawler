@@ -1,8 +1,7 @@
-package crawler_tests
+package tests
 
 import (
 	"fmt"
-	"testing"
 	"sync"
 	"github.com/amorgun/go-tour-crawler/crawler"
 )
@@ -12,7 +11,6 @@ func RunTest(crawl crawler.CrawlFunc,
 			 maxDepth int,
 			 fetcher crawler.Fetcher,
 			 expectedBodies map[string]string) (errorMessage string, ok bool) {
-
 
 	actualBodies := make(map[string]string)
 	actualVisitCount := make(map[string]int)
@@ -41,8 +39,7 @@ func RunTest(crawl crawler.CrawlFunc,
 		}
 	}
 	for url := range actualBodies {
-		_, isExpected := expectedBodies[url]
-		if !isExpected {
+		if _, isExpected := expectedBodies[url]; !isExpected {
 			errorMessage = fmt.Sprintf("Visited unexpected url %s", url)
 			return
 		}
@@ -57,19 +54,9 @@ func RunTest(crawl crawler.CrawlFunc,
 
 func RunAllTests(crawl crawler.CrawlFunc,
 				 processResult func (string, bool)) {
-	for _, testCase := range testCases {
+	for _, testCase := range getTestCases() {
 		errorMessage, ok := RunTest(
 			crawler.Crawl, testCase.startUrl, testCase.maxDepth, testCase.fetcher, testCase.expectedBodies)
 		processResult(errorMessage, ok)
 	}
-}
-
-
-func Test(t *testing.T) {
-	checkError := func (errorMessage string, ok bool) {
-		if !ok {
-			t.Error(errorMessage)
-		}
-	}
-	RunAllTests(crawler.Crawl, checkError)
 }

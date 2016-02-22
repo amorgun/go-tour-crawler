@@ -56,7 +56,7 @@ func RunAllTests(crawl crawler.CrawlFunc,
 				 processResult func (string, bool)) {
 	for _, testCase := range getTestCases() {
 		errorMessage, ok := RunTest(
-			crawler.Crawl, testCase.startUrl, testCase.maxDepth, testCase.fetcher, testCase.expectedBodies)
+			crawl, testCase.startUrl, testCase.maxDepth, testCase.fetcher, testCase.expectedBodies)
 		processResult(errorMessage, ok)
 	}
 }

@@ -23,7 +23,7 @@ var loading = errors.New("url load in progress") // sentinel value
 
 // Crawl uses fetcher to recursively crawl
 // pages starting with url, to a maximum of depth.
-func Crawl(url string, depth int, fetcher crawler.Fetcher,visitUrl func(string, string) ) {
+func Crawl(url string, depth int, fetcher crawler.Fetcher, visitUrl func(string, string) ) {
 	if depth <= 0 {
 		fmt.Printf("<- Done with %v, depth 0.\n", url)
 		return

@@ -193,7 +193,7 @@ func getTestCases() []testCase {
 			fetcher: newWarningFetcher(fakeFetcher{
 				"0": &fakeResult{
 					"node #0",
-					[]string{	
+					[]string{
 						"1",
 						"2",
 						"3",
@@ -325,16 +325,16 @@ func getTestCases() []testCase {
 				},
 			}),
 			expectedBodies: map[string]string{
-				"0": "node #0",
-				"1": "node #1",
-				"2": "node #2",
-				"3": "node #3",
-				"4": "node #4",
-				"5": "node #5",
-				"6": "node #6",
-				"7": "node #7",
-				"8": "node #8",
-				"9": "node #9",
+				"0":  "node #0",
+				"1":  "node #1",
+				"2":  "node #2",
+				"3":  "node #3",
+				"4":  "node #4",
+				"5":  "node #5",
+				"6":  "node #6",
+				"7":  "node #7",
+				"8":  "node #8",
+				"9":  "node #9",
 				"10": "node #10",
 				"11": "node #11",
 				"12": "node #12",

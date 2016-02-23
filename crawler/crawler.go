@@ -19,7 +19,6 @@ func Crawl(startUrl string, matDepth int, fetcher Fetcher, visitUrl func(string,
 	}{urls: map[string]bool{startUrl: true}}
 
 	fetchParallel := func(url string) {
-		fmt.Printf("Start processing %v\n", url)
 		body, urls, err := fetcher.Fetch(url)
 		if err != nil {
 			fmt.Printf("error on %v: %v\n", url, err)

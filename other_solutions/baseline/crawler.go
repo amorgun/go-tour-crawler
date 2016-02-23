@@ -7,7 +7,7 @@ import (
 
 // Crawl uses fetcher to recursively crawl
 // pages starting with url, to a maximum of depth.
-func Crawl(url string, depth int, fetcher crawler.Fetcher,visitUrl func(string, string)) {
+func Crawl(url string, depth int, fetcher crawler.Fetcher, visitUrl func(string, string)) {
 	// TODO: Fetch URLs in parallel.
 	// TODO: Don't fetch the same URL twice.
 	// This implementation doesn't do either:

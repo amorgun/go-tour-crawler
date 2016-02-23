@@ -1,14 +1,14 @@
 package tests
 
 import (
-	"time"
 	"github.com/amorgun/go-tour-crawler/crawler"
+	"time"
 )
 
 type testCase struct {
-	startUrl string
-	maxDepth int
-	fetcher crawler.Fetcher
+	startUrl       string
+	maxDepth       int
+	fetcher        crawler.Fetcher
 	expectedBodies map[string]string
 }
 
@@ -24,7 +24,7 @@ func getTestCases() []testCase {
 						"http://golang.org/pkg/",
 						"http://golang.org/cmd/",
 					},
-					func(){},
+					func() {},
 				},
 				"http://golang.org/pkg/": &fakeResult{
 					"Packages",
@@ -34,7 +34,7 @@ func getTestCases() []testCase {
 						"http://golang.org/pkg/fmt/",
 						"http://golang.org/pkg/os/",
 					},
-					func(){},
+					func() {},
 				},
 				"http://golang.org/pkg/fmt/": &fakeResult{
 					"Package fmt",
@@ -42,7 +42,7 @@ func getTestCases() []testCase {
 						"http://golang.org/",
 						"http://golang.org/pkg/",
 					},
-					func(){},
+					func() {},
 				},
 				"http://golang.org/pkg/os/": &fakeResult{
 					"Package os",
@@ -50,14 +50,14 @@ func getTestCases() []testCase {
 						"http://golang.org/",
 						"http://golang.org/pkg/",
 					},
-					func(){},
+					func() {},
 				},
 			}),
-			expectedBodies: map[string]string {
-				"http://golang.org/": "The Go Programming Language",
-				"http://golang.org/pkg/": "Packages",
+			expectedBodies: map[string]string{
+				"http://golang.org/":         "The Go Programming Language",
+				"http://golang.org/pkg/":     "Packages",
 				"http://golang.org/pkg/fmt/": "Package fmt",
-				"http://golang.org/pkg/os/": "Package os",
+				"http://golang.org/pkg/os/":  "Package os",
 			},
 		},
 		testCase{
@@ -67,20 +67,20 @@ func getTestCases() []testCase {
 				"0": &fakeResult{
 					"node #0",
 					[]string{},
-					func(){},
+					func() {},
 				},
 				"1": &fakeResult{
 					"node #1",
 					[]string{},
-					func(){},
+					func() {},
 				},
 				"2": &fakeResult{
 					"node #2",
 					[]string{},
-					func(){},
+					func() {},
 				},
 			}),
-			expectedBodies: map[string]string {
+			expectedBodies: map[string]string{
 				"1": "node #1",
 			},
 		},
@@ -94,14 +94,14 @@ func getTestCases() []testCase {
 						"1",
 						"3",
 					},
-					func(){},
+					func() {},
 				},
 				"1": &fakeResult{
 					"node #1 with very slow fetching",
 					[]string{
 						"2",
 					},
-					func(){
+					func() {
 						time.Sleep(1 * time.Second)
 					},
 				},
@@ -111,34 +111,34 @@ func getTestCases() []testCase {
 						"5",
 						"6",
 					},
-					func(){},
+					func() {},
 				},
 				"3": &fakeResult{
 					"node #3",
 					[]string{
 						"4",
 					},
-					func(){},
+					func() {},
 				},
 				"4": &fakeResult{
 					"node #4",
 					[]string{
 						"2",
 					},
-					func(){},
+					func() {},
 				},
 				"5": &fakeResult{
 					"node #5",
 					[]string{},
-					func(){},
+					func() {},
 				},
 				"6": &fakeResult{
 					"node #6",
 					[]string{},
-					func(){},
+					func() {},
 				},
 			}),
-			expectedBodies: map[string]string {
+			expectedBodies: map[string]string{
 				"0": "node #0",
 				"1": "node #1 with very slow fetching",
 				"2": "node #2",

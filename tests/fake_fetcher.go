@@ -2,16 +2,16 @@ package tests
 
 import (
 	"fmt"
-	"sync"
 	"github.com/amorgun/go-tour-crawler/crawler"
+	"sync"
 )
 
 // fakeFetcher is Fetcher that returns canned results.
 type fakeFetcher map[string]*fakeResult
 
 type fakeResult struct {
-	body string
-	urls []string
+	body   string
+	urls   []string
 	action func()
 }
 
@@ -24,9 +24,9 @@ func (f fakeFetcher) Fetch(url string) (string, []string, error) {
 }
 
 type warningFetcher struct {
-	fetcher crawler.Fetcher
+	fetcher        crawler.Fetcher
 	alreadyFetched map[string]bool
-	lock sync.Mutex
+	lock           sync.Mutex
 }
 
 func (f warningFetcher) Fetch(url string) (string, []string, error) {

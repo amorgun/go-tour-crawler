@@ -5,11 +5,11 @@ import (
 	"sync"
 )
 
-type CrawlFunc func (string, int, Fetcher, func(string, string))
+type CrawlFunc func(string, int, Fetcher, func(string, string))
 
 // Crawl uses fetcher to recursively crawl
 // pages starting with url, to a maximum of depth.
-func Crawl(startUrl string, matDepth int, fetcher Fetcher,visitUrl func(string, string)) {
+func Crawl(startUrl string, matDepth int, fetcher Fetcher, visitUrl func(string, string)) {
 	newUrls := make(chan string)
 	done := make(chan string)
 
@@ -38,20 +38,19 @@ func Crawl(startUrl string, matDepth int, fetcher Fetcher,visitUrl func(string, 
 		done <- url
 	}
 
-
-	for depth, currentPool, nextPool := 0, []string{startUrl,}, []string{};
+	for depth, currentPool, nextPool := 0, []string{startUrl}, []string{};
 		depth <= matDepth;
-		depth, currentPool, nextPool = depth + 1, nextPool, []string{} {
+		depth, currentPool, nextPool = depth+1, nextPool, []string{} {
 		for _, url := range currentPool {
 			fmt.Printf("Start %v on depth %v\n", url, depth)
 			go fetchParallel(url)
 		}
 		for jobsDone := 0; jobsDone < len(currentPool); {
 			select {
-				case newUrl := <-newUrls:
-					nextPool = append(nextPool, newUrl)
-				case <-done:
-					jobsDone++
+			case newUrl := <-newUrls:
+				nextPool = append(nextPool, newUrl)
+			case <-done:
+				jobsDone++
 			}
 		}
 	}

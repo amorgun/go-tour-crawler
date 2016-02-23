@@ -16,14 +16,26 @@ var crawlers = map[string]crawler.CrawlFunc{
 
 func main() {
 	for crawlerName, crawlerFunc := range crawlers {
+		fmt.Printf("Start testing %q\n\n", crawlerName)
+		okCount, failedCount := 0, 0
 		checkError := func(errorMessage string, ok bool) {
-			if !ok {
-				fmt.Printf("%v: FAILED\n\tReason: %v\n", crawlerName, errorMessage)
-			} else {
+			if ok {
 				fmt.Printf("%v: OK\n", crawlerName)
+				okCount++
+			} else {
+				fmt.Printf("%v: FAILED\n\tReason: %v\n", crawlerName, errorMessage)
+				failedCount++
 			}
 			fmt.Println()
 		}
 		tests.RunAllTests(crawlerFunc, checkError)
+		fmt.Printf(
+`----------------------
+Results for %q:
+	PASSED: %v
+	FAILED: %v
+----------------------
+
+`, crawlerName, okCount, failedCount)
 	}
 }

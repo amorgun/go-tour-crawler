@@ -40,7 +40,7 @@ func Crawl(startUrl string, matDepth int, fetcher Fetcher, visitUrl func(string,
 
 	// Crawl all depths sequentially
 	for depth, currentPool, nextPool := 0, []string{startUrl}, []string{};
-		depth <= matDepth;
+		depth < matDepth;
 		depth, currentPool, nextPool = depth+1, nextPool, []string{} {
 		// Fetch each url in parallel
 		for _, url := range currentPool {

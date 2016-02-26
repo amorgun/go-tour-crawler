@@ -29,7 +29,7 @@ type warningFetcher struct {
 	lock           sync.Mutex
 }
 
-func (f warningFetcher) Fetch(url string) (string, []string, error) {
+func (f *warningFetcher) Fetch(url string) (string, []string, error) {
 	f.lock.Lock()
 	defer f.lock.Unlock()
 	if f.alreadyFetched[url] {
@@ -40,5 +40,5 @@ func (f warningFetcher) Fetch(url string) (string, []string, error) {
 }
 
 func newWarningFetcher(fetcher crawler.Fetcher) crawler.Fetcher {
-	return warningFetcher{fetcher: fetcher, alreadyFetched: make(map[string]bool)}
+	return &warningFetcher{fetcher: fetcher, alreadyFetched: make(map[string]bool)}
 }
